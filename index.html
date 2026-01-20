@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Zen | Endless Positivity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdf6f0;
+            --card-color: #ffffff;
+            --text-color: #5d5b6a;
+            --accent: #a7c4bc;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 600px;
+        }
+
+        h1 { font-weight: 500; letter-spacing: -1px; font-size: 2.5rem; margin-bottom: 10px; }
+        p { opacity: 0.8; font-size: 1.1rem; }
+
+        #loop-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            padding-bottom: 120px;
+        }
+
+        .affirmation-card {
+            background: var(--card-color);
+            padding: 50px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            text-align: center;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            border: 1px solid rgba(0,0,0,0.01);
+            margin: 0 20px;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .support-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #ffdd00;
+            color: #000;
+            padding: 14px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .support-btn:hover { transform: scale(1.05); background: #ffea00; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Infinite Zen</h1>
+        <p>A never-ending stream of light for your day. Scroll forever.</p>
+    </header>
+
+    <div id="loop-container"></div>
+
+    <a href="https://buy.stripe.com/your-link" target="_blank" class="support-btn">
+        ☕ Support this project
+    </a>
+
+    <script src="messages.js"></script>
+    
+    <script>
+        const container = document.getElementById('loop-container');
+
+        function createCard() {
+            // Pulls from the 'messages' array in messages.js
+            const text = messages[Math.floor(Math.random() * messages.length)];
+            const card = document.createElement('div');
+            card.className = 'affirmation-card';
+            card.innerText = text;
+            container.appendChild(card);
+        }
+
+        // Initial set of cards
+        for(let i=0; i<10; i++) createCard();
+
+        // Infinite Scroll Logic (Intersection Observer is more modern)
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                for(let i=0; i<5; i++) createCard();
+            }
+        });
+    </script>
+</body>
+</html>
