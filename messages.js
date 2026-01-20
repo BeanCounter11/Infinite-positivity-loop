@@ -108,7 +108,7 @@ window.messages = [
     "I am a blessing to the world.",
     "I am intelligence and love in action.",
     "The best is yet to come.",
-    "I am ready for a wonderful day."
+    "I am ready for a wonderful day.",
     "I am in charge of how I feel and today I choose happiness.",
     "My mind is full of nourishing and empowering thoughts.",
     "I am worthy of all the blessings coming my way.",
@@ -208,7 +208,7 @@ window.messages = [
     "The best version of my life is happening right now.",
     "I am ready for a wonderful and fulfilling day.",
     "I walk through life with peace, grace, and confidence.",
-    "My heart is full and my spirit is light."
+    "My heart is full and my spirit is light.",
     "I am in charge of how I feel and today I choose happiness.",
     "My mind is full of nourishing and empowering thoughts.",
     "I am worthy of all the blessings coming my way.",
