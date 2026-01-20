@@ -33,6 +33,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            animation: breathe 10s ease-in-out infinite;
+            background-size: 400% 400%;
         }
 
         header {
@@ -64,11 +66,33 @@
             border: 1px solid rgba(0,0,0,0.01);
             margin: 0 20px;
             animation: fadeIn 0.8s ease forwards;
+            backdrop-filter: blur(5px);
+            z-index: 2;
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes breathe {
+            0% { background-color: var(--bg-color); filter: brightness(100%); }
+            50% { filter: brightness(96%) saturate(90%); }
+            100% { background-color: var(--bg-color); filter: brightness(100%); }
+        }
+
+        #theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-color);
+            border: 1px solid var(--accent);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            z-index: 1001;
         }
 
         .support-btn {
@@ -87,27 +111,6 @@
         }
 
         .support-btn:hover { transform: scale(1.05); background: #ffea00; }
-
-        /* 1. Add the "breathing" animation to the body */
-            body {
-        /* ... existing body styles ... */
-            animation: breathe 10s ease-in-out infinite;
-            background-size: 400% 400%; /* Makes the shift smoother */
-            }
-
-        /* 2. Define the subtle shift */
-            @keyframes breathe {
-            0% { background-color: var(--bg-color); filter: brightness(100%); }
-            50% { filter: brightness(96%) saturate(90%); } /* The "exhale" - slightly dimmer and softer */
-            100% { background-color: var(--bg-color); filter: brightness(100%); }
-        }
-
-        /* 3. Ensure the cards stay clear above the animation */
-            .affirmation-card {
-            /* ... existing styles ... */
-            backdrop-filter: blur(5px); /* Optional: makes cards feel "glassy" */
-            z-index: 2;
-            }
     </style>
 </head>
 <body>
@@ -126,33 +129,42 @@
     </a>
 
     <script src="messages.js"></script>
+
     <script>
-        // --- Dark Mode Logic ---
-        const toggleBtn = document.getElementById('theme-toggle');
-        
-        toggleBtn.addEventListener('click', () => {
-            const isDark = document.body.getAttribute('data-theme') === 'dark';
-            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            toggleBtn.innerText = isDark ? '🌙 Dark Mode' : '☀️ Light Mode';
-        });
+        window.onload = () => {
+            const container = document.getElementById('loop-container');
+            const toggleBtn = document.getElementById('theme-toggle');
 
-        // --- Existing Infinite Scroll Logic ---
-        const container = document.getElementById('loop-container');
-        function createCard() {
-            const text = messages[Math.floor(Math.random() * messages.length)];
-            const card = document.createElement('div');
-            card.className = 'affirmation-card';
-            card.innerText = text;
-            container.appendChild(card);
-        }
+            // --- Dark Mode Logic ---
+            toggleBtn.addEventListener('click', () => {
+                const isDark = document.body.getAttribute('data-theme') === 'dark';
+                document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+                toggleBtn.innerText = isDark ? '🌙 Dark Mode' : '☀️ Light Mode';
+            });
 
-        for(let i=0; i<10; i++) createCard();
-
-        window.addEventListener('scroll', () => {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
-                for(let i=0; i<5; i++) createCard();
+            // --- Infinite Scroll Logic ---
+            function createCard() {
+                if (typeof messages !== 'undefined' && messages.length > 0) {
+                    const text = messages[Math.floor(Math.random() * messages.length)];
+                    const card = document.createElement('div');
+                    card.className = 'affirmation-card';
+                    card.innerText = text;
+                    container.appendChild(card);
+                } else {
+                    console.error("messages.js not found or messages array is empty.");
+                }
             }
-        });
+
+            // Initial cards
+            for(let i=0; i<10; i++) createCard();
+
+            // Scroll trigger
+            window.addEventListener('scroll', () => {
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                    for(let i=0; i<5; i++) createCard();
+                }
+            });
+        };
     </script>
 </body>
 </html>
