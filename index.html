@@ -128,10 +128,11 @@
         ☕ Support
     </a>
 
-    <script src="messages.js"></script>
+    <script src="./messages.js"></script>
 
     <script>
-        window.onload = () => {
+        // 2. Changed to DOMContentLoaded for faster execution
+        document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('loop-container');
             const toggleBtn = document.getElementById('theme-toggle');
 
@@ -144,14 +145,19 @@
 
             // --- Infinite Scroll Logic ---
             function createCard() {
-                if (typeof messages !== 'undefined' && messages.length > 0) {
-                    const text = messages[Math.floor(Math.random() * messages.length)];
+                // Check both 'messages' and 'window.messages'
+                const dataSource = window.messages || messages;
+
+                if (typeof dataSource !== 'undefined' && dataSource.length > 0) {
+                    const text = dataSource[Math.floor(Math.random() * dataSource.length)];
                     const card = document.createElement('div');
                     card.className = 'affirmation-card';
                     card.innerText = text;
                     container.appendChild(card);
                 } else {
-                    console.error("messages.js not found or messages array is empty.");
+                    // This will tell us EXACTLY what the error is in the Console
+                    console.error("Critical: The messages array is not accessible to the script.");
+                    container.innerHTML = "<p style='text-align:center;'>Loading peace and positivity...</p>";
                 }
             }
 
@@ -164,7 +170,7 @@
                     for(let i=0; i<5; i++) createCard();
                 }
             });
-        };
+        });
     </script>
 </body>
 </html>
