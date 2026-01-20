@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infinite Zen | Endless Positivity</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    
+    <script src="./messages.js" defer></script>
+
     <style>
         :root {
             /* "Morning Mist" Light Mode */
@@ -106,7 +109,7 @@
             text-decoration: none;
             font-weight: 600;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            z-index: 1000;
+            z-index: 9999; /* Increased to ensure it floats above all cards */
             transition: all 0.3s ease;
         }
 
@@ -116,6 +119,10 @@
 <body>
 
     <button id="theme-toggle">🌙 Dark Mode</button>
+    
+    <a href="https://buy.stripe.com/test_bJeeVe8DDf2i65690jfjG01" target="_blank" class="support-btn">
+        ☕ Support
+    </a>
 
     <header>
         <h1>Infinite Zen</h1>
@@ -123,12 +130,6 @@
     </header>
 
     <div id="loop-container"></div>
-
-    <a href="https://buy.stripe.com/test_bJeeVe8DDf2i65690jfjG01" target="_blank" class="support-btn">
-        ☕ Support
-    </a>
-
-    <script src="./messages.js"></script>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -156,12 +157,14 @@
             }
         }
 
-        // Only try to create cards if the list exists
-        if (window.messages) {
-            for(let i=0; i<10; i++) createCard();
-        } else {
-            console.error("messages.js failed to load properly.");
-        }
+        // Wait a tiny bit to ensure the deferred messages.js is parsed
+        setTimeout(() => {
+            if (window.messages) {
+                for(let i=0; i<10; i++) createCard();
+            } else {
+                console.error("messages.js failed to load properly.");
+            }
+        }, 100);
 
         window.addEventListener('scroll', () => {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
