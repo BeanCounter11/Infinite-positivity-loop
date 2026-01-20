@@ -5,37 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infinite Zen | Endless Positivity</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
-    
     <script src="./messages.js" defer></script>
-
     <style>
         :root {
-            /* "Morning Mist" Light Mode */
-            --bg-color: #f7f9fb;   /* Very light blue-white */
+            --bg-color: #f7f9fb;
             --card-color: #ffffff;
-            --text-color: #4a4e69; /* Soft charcoal */
-            --accent: #95d5b2;     /* Fresh mint green */
-            --shadow: rgba(149, 213, 178, 0.1); /* Mint-tinted shadow */
+            --text-color: #4a4e69;
+            --accent: #95d5b2;
+            --shadow: rgba(149, 213, 178, 0.1);
         }
 
         [data-theme="dark"] {
-            /* "Deep Space" Dark Mode */
-            --bg-color: #0f172a;   /* Rich navy */
+            --bg-color: #0f172a;
             --card-color: #1e293b; 
             --text-color: #f1f5f9; 
-            --accent: #38bdf8;     /* Sky blue */
+            --accent: #38bdf8; 
             --shadow: rgba(0, 0, 0, 0.4);
         }
 
-        body {
-            margin: 0;
-            padding: 0;
+        /* THE FIX: Animation is on a separate layer, NOT the body */
+        #bg-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg-color);
+            animation: breathe 10s ease-in-out infinite;
+            z-index: -1; /* Sits behind everything */
+        }
+
+        body {
+            margin: 0; padding: 0;
             font-family: 'Quicksand', sans-serif;
             color: var(--text-color);
-            /* Remove 'display: flex' and 'align-items: center' from body */
-            animation: breathe 10s ease-in-out infinite;
-            background-size: 400% 400%;
             min-height: 100vh;
         }
 
@@ -68,14 +68,12 @@
             background: var(--card-color);
             padding: 50px 30px;
             border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            box-shadow: 0 10px 40px var(--shadow);
             text-align: center;
             font-size: 1.3rem;
             line-height: 1.6;
-            border: 1px solid rgba(0,0,0,0.01);
             margin: 0 20px;
             animation: fadeIn 0.8s ease forwards;
-            backdrop-filter: blur(5px);
             z-index: 2;
         }
 
@@ -85,29 +83,26 @@
         }
 
         @keyframes breathe {
-            0% { background-color: var(--bg-color); filter: brightness(100%); }
-            50% { filter: brightness(96%) saturate(90%); }
-            100% { background-color: var(--bg-color); filter: brightness(100%); }
+            0% { filter: brightness(100%); }
+            50% { filter: brightness(95%) saturate(90%); }
+            100% { filter: brightness(100%); }
         }
 
         #theme-toggle {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 20px; right: 20px;
             background: var(--card-color);
             border: 1px solid var(--accent);
             color: var(--text-color);
             padding: 8px 15px;
             border-radius: 20px;
             cursor: pointer;
-            font-family: inherit;
-            z-index: 1001;
+            z-index: 9999;
         }
 
         .support-btn {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 30px; right: 30px;
             background: #ffdd00;
             color: #000;
             padding: 14px 24px;
@@ -115,15 +110,13 @@
             text-decoration: none;
             font-weight: 600;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            z-index: 99999;
-            /* This next line is the magic fix for fixed elements inside animated parents */
-            transform: translateZ(0); 
+            z-index: 9999;
         }
-
-        .support-btn:hover { transform: scale(1.05); background: #ffea00; }
     </style>
 </head>
 <body>
+
+    <div id="bg-layer"></div>
 
     <button id="theme-toggle">🌙 Dark Mode</button>
     
@@ -136,17 +129,14 @@
             <h1>Infinite Zen</h1>
             <p>A never-ending stream of light. Scroll forever.</p>
         </header>
-
         <div id="loop-container"></div>
     </div>
 
-    <script src="./messages.js" defer></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('loop-container');
         const toggleBtn = document.getElementById('theme-toggle');
 
-        // Dark Mode Logic
         toggleBtn.addEventListener('click', () => {
             const isDark = document.body.getAttribute('data-theme') === 'dark';
             document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
@@ -164,14 +154,11 @@
             }
         }
 
-        // Safety timeout to ensure messages.js is parsed
         setTimeout(() => {
             if (window.messages) {
                 for(let i=0; i<10; i++) createCard();
-            } else {
-                console.error("messages.js failed to load.");
             }
-        }, 100);
+        }, 150);
 
         window.addEventListener('scroll', () => {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
