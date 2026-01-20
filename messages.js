@@ -1,4 +1,4 @@
-const messages = [
+window.messages = [
     "You are a radiant light in this world.",
     "Your potential is truly limitless.",
     "Today is overflowing with opportunity.",
