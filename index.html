@@ -124,18 +124,22 @@
         ☕ Support
     </a>
 
-    <header>
-        <h1>Infinite Zen</h1>
-        <p>A never-ending stream of light. Scroll forever.</p>
-    </header>
+    <div id="scroll-wrapper">
+        <header>
+            <h1>Infinite Zen</h1>
+            <p>A never-ending stream of light. Scroll forever.</p>
+        </header>
 
-    <div id="loop-container"></div>
+        <div id="loop-container"></div>
+    </div>
 
+    <script src="./messages.js" defer></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('loop-container');
         const toggleBtn = document.getElementById('theme-toggle');
 
+        // Dark Mode Logic
         toggleBtn.addEventListener('click', () => {
             const isDark = document.body.getAttribute('data-theme') === 'dark';
             document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
@@ -143,26 +147,22 @@
         });
 
         function createCard() {
-            // This line checks for 'window.messages' specifically
             const list = window.messages;
-
             if (list && list.length > 0) {
                 const text = list[Math.floor(Math.random() * list.length)];
                 const card = document.createElement('div');
                 card.className = 'affirmation-card';
                 card.innerText = text;
                 container.appendChild(card);
-            } else {
-                console.error("The messages list is empty or not loaded yet.");
             }
         }
 
-        // Wait a tiny bit to ensure the deferred messages.js is parsed
+        // Safety timeout to ensure messages.js is parsed
         setTimeout(() => {
             if (window.messages) {
                 for(let i=0; i<10; i++) createCard();
             } else {
-                console.error("messages.js failed to load properly.");
+                console.error("messages.js failed to load.");
             }
         }, 100);
 
