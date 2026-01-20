@@ -109,9 +109,6 @@ window.messages = [
     "I am intelligence and love in action.",
     "The best is yet to come.",
     "I am ready for a wonderful day."
-];
-
-const moreMessages = [
     "I am in charge of how I feel and today I choose happiness.",
     "My mind is full of nourishing and empowering thoughts.",
     "I am worthy of all the blessings coming my way.",
@@ -212,8 +209,6 @@ const moreMessages = [
     "I am ready for a wonderful and fulfilling day.",
     "I walk through life with peace, grace, and confidence.",
     "My heart is full and my spirit is light."
-];
-const moreMessages = [
     "I am in charge of how I feel and today I choose happiness.",
     "My mind is full of nourishing and empowering thoughts.",
     "I am worthy of all the blessings coming my way.",
