@@ -131,46 +131,44 @@
     <script src="./messages.js"></script>
 
     <script>
-        // 2. Changed to DOMContentLoaded for faster execution
-        document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('loop-container');
-            const toggleBtn = document.getElementById('theme-toggle');
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('loop-container');
+        const toggleBtn = document.getElementById('theme-toggle');
 
-            // --- Dark Mode Logic ---
-            toggleBtn.addEventListener('click', () => {
-                const isDark = document.body.getAttribute('data-theme') === 'dark';
-                document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-                toggleBtn.innerText = isDark ? '🌙 Dark Mode' : '☀️ Light Mode';
-            });
-
-            // --- Infinite Scroll Logic ---
-            function createCard() {
-                // Check both 'messages' and 'window.messages'
-                const dataSource = window.messages || messages;
-
-                if (typeof dataSource !== 'undefined' && dataSource.length > 0) {
-                    const text = dataSource[Math.floor(Math.random() * dataSource.length)];
-                    const card = document.createElement('div');
-                    card.className = 'affirmation-card';
-                    card.innerText = text;
-                    container.appendChild(card);
-                } else {
-                    // This will tell us EXACTLY what the error is in the Console
-                    console.error("Critical: The messages array is not accessible to the script.");
-                    container.innerHTML = "<p style='text-align:center;'>Loading peace and positivity...</p>";
-                }
-            }
-
-            // Initial cards
-            for(let i=0; i<10; i++) createCard();
-
-            // Scroll trigger
-            window.addEventListener('scroll', () => {
-                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
-                    for(let i=0; i<5; i++) createCard();
-                }
-            });
+        toggleBtn.addEventListener('click', () => {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            toggleBtn.innerText = isDark ? '🌙 Dark Mode' : '☀️ Light Mode';
         });
+
+        function createCard() {
+            // This line checks for 'window.messages' specifically
+            const list = window.messages;
+
+            if (list && list.length > 0) {
+                const text = list[Math.floor(Math.random() * list.length)];
+                const card = document.createElement('div');
+                card.className = 'affirmation-card';
+                card.innerText = text;
+                container.appendChild(card);
+            } else {
+                console.error("The messages list is empty or not loaded yet.");
+            }
+        }
+
+        // Only try to create cards if the list exists
+        if (window.messages) {
+            for(let i=0; i<10; i++) createCard();
+        } else {
+            console.error("messages.js failed to load properly.");
+        }
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                for(let i=0; i<5; i++) createCard();
+            }
+        });
+    });
     </script>
 </body>
 </html>
