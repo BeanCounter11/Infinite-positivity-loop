@@ -112,12 +112,42 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             z-index: 9999;
         }
+
+        .dev-link {
+            position: fixed;
+            top: 25px;
+            left: 20px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: var(--text-color);
+            opacity: 0.5; /* Muted by default */
+            transition: opacity 0.3s ease;
+            z-index: 9999;
+            letter-spacing: 0.5px;
+        }
+
+        .dev-link:hover {
+            opacity: 1; /* Reveals fully on hover */
+            text-decoration: underline;
+        }
+
+        /* On mobile, we move it slightly so it doesn't crowd the screen */
+        @media (max-width: 600px) {
+            .dev-link {
+                top: 10px;
+                font-size: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div id="bg-layer"></div>
 
+    <a href="https://enonymuss-software.netlify.app/" target="_blank" class="dev-link">
+        Brought to you by Enonymuss Software
+    </a>
+    
     <button id="theme-toggle">🌙 Dark Mode</button>
     
     <a href="https://buy.stripe.com/test_bJeeVe8DDf2i65690jfjG01" target="_blank" class="support-btn">
