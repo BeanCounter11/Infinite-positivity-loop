@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Zen | Endless Positivity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <script src="./messages.js" defer></script>
+    <style>
+        :root {
+            --bg-color: #f7f9fb;
+            --card-color: #ffffff;
+            --text-color: #4a4e69;
+            --accent: #95d5b2;
+            --shadow: rgba(149, 213, 178, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-color: #1e293b; 
+            --text-color: #f1f5f9; 
+            --accent: #38bdf8; 
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        /* THE FIX: Animation is on a separate layer, NOT the body */
+        #bg-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            animation: breathe 10s ease-in-out infinite;
+            z-index: -1; /* Sits behind everything */
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        #scroll-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 600px;
+        }
+
+        h1 { font-weight: 500; letter-spacing: -1px; font-size: 2.5rem; margin-bottom: 10px; }
+        p { opacity: 0.8; font-size: 1.1rem; }
+
+        #loop-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            padding-bottom: 120px;
+        }
+
+        .affirmation-card {
+            background: var(--card-color);
+            padding: 50px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px var(--shadow);
+            text-align: center;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin: 0 20px;
+            animation: fadeIn 0.8s ease forwards;
+            z-index: 2;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes breathe {
+            0% { filter: brightness(100%); }
+            50% { filter: brightness(95%) saturate(90%); }
+            100% { filter: brightness(100%); }
+        }
+
+        #theme-toggle {
+            position: fixed;
+            top: 20px; right: 20px;
+            background: var(--card-color);
+            border: 1px solid var(--accent);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+        .site-brand {
+            position: fixed;
+            top: 20px; left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            z-index: 9999;
+        }
+
+        .site-brand a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.85;
+            transition: opacity 0.2s, color 0.2s;
+        }
+
+        .site-brand a:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .terms-btn {
+            background: var(--card-color);
+            border: 1px solid var(--accent);
+            color: var(--text-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.85rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .terms-btn:hover {
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-color);
+            padding: 40px 32px 32px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px var(--shadow);
+            max-width: 560px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .modal-content h2 {
+            margin: 0 0 24px;
+            font-weight: 500;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .modal-section h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--accent);
+            margin: 0 0 6px;
+        }
+
+        .modal-section p {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .modal-section a {
+            color: var(--accent);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px; right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0.6;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        .support-area {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            z-index: 9999;
+        }
+
+        .support-btn {
+            background: #ffdd00;
+            color: #000;
+            padding: 14px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .stripe-notice {
+            font-size: 0.75rem;
+            opacity: 0.65;
+            text-align: right;
+            max-width: 200px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-layer"></div>
+
+    <div class="site-brand">
+        <a href="https://enonymuss-software.netlify.app/" target="_blank" rel="noopener noreferrer">Brought to you by Enonymuss Software</a>
+        <button type="button" class="terms-btn" id="terms-btn">Terms of Service</button>
+    </div>
+
+    <button id="theme-toggle">🌙 Dark Mode</button>
+
+    <div class="support-area">
+        <a href="https://buy.stripe.com/test_bJeeVe8DDf2i65690jfjG01" target="_blank" rel="noopener noreferrer" class="support-btn">
+            ☕ Support
+        </a>
+        <span class="stripe-notice">Donations are processed securely by Stripe.</span>
+    </div>
+
+    <div class="modal-overlay" id="terms-modal" role="dialog" aria-modal="true" aria-labelledby="terms-title">
+        <div class="modal-content">
+            <button type="button" class="modal-close" id="terms-close" aria-label="Close">&times;</button>
+            <h2 id="terms-title">Terms of Service</h2>
+            <div class="modal-section">
+                <h3>Data Collection</h3>
+                <p>The Positivity Loop is designed as a privacy-first environment. We collect no personal information, use no tracking cookies, and do not store any user data on our servers.</p>
+            </div>
+            <div class="modal-section">
+                <h3>Third Parties</h3>
+                <p>Processing and hosting are handled by Netlify and Stripe. For details on how these entities process technical data (such as IP addresses for security or payment details), please refer to their respective Privacy Policies.</p>
+            </div>
+            <div class="modal-section">
+                <h3>GDPR Compliance</h3>
+                <p>By not collecting, storing, or processing PII (Personally Identifiable Information), this product adheres to "Privacy by Design" principles.</p>
+            </div>
+            <div class="modal-section">
+                <h3>Refunds</h3>
+                <p>Any donations made by users of The Positivity Loop (found at <a href="https://the-positivity-loop.netlify.app/" target="_blank" rel="noopener noreferrer">https://the-positivity-loop.netlify.app/</a>), whether through the dedicated Stripe link or otherwise, are final. No refunds will be given.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="scroll-wrapper">
+        <header>
+            <h1>Infinite Zen</h1>
+            <p>A never-ending stream of light. Scroll forever.</p>
+        </header>
+        <div id="loop-container"></div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('loop-container');
+        const toggleBtn = document.getElementById('theme-toggle');
+
+        toggleBtn.addEventListener('click', () => {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            toggleBtn.innerText = isDark ? '🌙 Dark Mode' : '☀️ Light Mode';
+        });
+
+        const termsModal = document.getElementById('terms-modal');
+        const termsBtn = document.getElementById('terms-btn');
+        const termsClose = document.getElementById('terms-close');
+
+        function openTerms() {
+            termsModal.classList.add('open');
+        }
+
+        function closeTerms() {
+            termsModal.classList.remove('open');
+        }
+
+        termsBtn.addEventListener('click', openTerms);
+        termsClose.addEventListener('click', closeTerms);
+        termsModal.addEventListener('click', (e) => {
+            if (e.target === termsModal) closeTerms();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && termsModal.classList.contains('open')) closeTerms();
+        });
+
+        function createCard() {
+            const list = window.messages;
+            if (list && list.length > 0) {
+                const text = list[Math.floor(Math.random() * list.length)];
+                const card = document.createElement('div');
+                card.className = 'affirmation-card';
+                card.innerText = text;
+                container.appendChild(card);
+            }
+        }
+
+        setTimeout(() => {
+            if (window.messages) {
+                for(let i=0; i<10; i++) createCard();
+            }
+        }, 150);
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                for(let i=0; i<5; i++) createCard();
+            }
+        });
+    });
+    </script>
+</body>
+</html>
