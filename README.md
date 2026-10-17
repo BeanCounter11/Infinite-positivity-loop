@@ -1,28 +1,52 @@
-# Infinite-positivity-loop
-Webpage with "infinite" affirmation statement as you scroll
+# Infinite Zen (Infinite Positivity Loop)
 
-# Infinite Zen 🌿
+A small, open-source hobby experiment: a single-page infinite scroll of calm affirmations. Built for curiosity and learning — not for sale. Part of **#BuildForJoy**.
 
-A minimalist, single-page web application that provides an infinite stream of positive affirmations and reinforcement. Designed for a "lo-fi" mental reset, it features an endless scroll mechanism and a calming aesthetic.
+## Why I Built This
 
-## ✨ Features
-- **Infinite Scroll:** Never-ending content generated via vanilla JavaScript.
-- **Minimalist Design:** Focused on typography and soft color palettes to reduce digital anxiety.
-- **Zero Backend:** Hosted entirely as a static site for maximum speed and security.
-- **Monetized:** Integrated with Stripe for seamless, low-friction support/donations.
+I wanted a tiny playground for pure front-end craft: soft motion, theme switching, and an endless feed without a backend. The goal was to practice calm UI patterns and infinite-scroll mechanics while shipping something you can open locally in seconds.
 
-## 🛠️ Tech Stack
-- **HTML5 / CSS3** (Custom properties & animations)
-- **Vanilla JavaScript** (Intersection logic)
-- **Google Fonts** (Quicksand)
-- **Stripe** (Payment integration)
+This is a non-commercial exploration. Fork it, break it, rebuild it — enjoy the building.
 
-## 🚀 Deployment
-This project is optimized for deployment on **Netlify** or **GitHub Pages**.
-1. Clone the repository.
-2. Update the Stripe link in `index.html`.
-3. Add your custom messages to `messages.js`.
-4. Drag and drop the folder into Netlify Drop.
+## What I Explored (Tech Stack)
 
-## 📝 License
-MIT License - Feel free to use this to spread more positivity in the world.
+- **HTML5 / CSS3** — custom properties, layered background animation, responsive layout
+- **Vanilla JavaScript** — random affirmation cards, scroll-triggered append, dark/light theme
+- **Google Fonts (Quicksand)** — light typography for a lo-fi feel
+- **Static hosting** — no server, no database; open `index.html` or drop on Netlify / GitHub Pages
+
+## Lessons Learned
+
+- Separating the “breathing” background onto its own layer keeps scroll and theme toggles smooth.
+- Infinite scroll is easy to prototype with vanilla JS; the harder part is remembering well-being (take breaks!).
+- Shipping without payments or accounts keeps the experiment honest and easy to share.
+
+## Run Locally
+
+No build step or `npm` required.
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/BeanCounter11/Infinite-positivity-loop.git
+   cd Infinite-positivity-loop
+   ```
+2. Open `index.html` in a browser, **or** serve the folder with any static server, for example:
+   ```bash
+   npx serve .
+   ```
+3. Optional: edit affirmations in `messages.js`.
+
+## Try It
+
+- Open the app locally (see above), or visit a static host if you deploy one.
+- Browse the code on GitHub: [BeanCounter11/Infinite-positivity-loop](https://github.com/BeanCounter11/Infinite-positivity-loop)
+
+## Disclaimer
+
+This app is a non-commercial hobby experiment provided **AS IS** without warranty of any kind, express or implied. Use at your own risk.
+
+The page uses continuous scroll. Monitor your own usage, take regular breaks, enjoy the interaction, and get building!
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
