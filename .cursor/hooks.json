@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .cursor/hooks/guard-git-identity.ps1",
+        "matcher": "git",
+        "failClosed": true
+      }
+    ]
+  }
+}

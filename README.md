@@ -47,6 +47,21 @@ This app is a non-commercial hobby experiment provided **AS IS** without warrant
 
 The page uses continuous scroll. Monitor your own usage, take regular breaks, enjoy the interaction, and get building!
 
+## Personal data & commits
+
+This project uses a **strict no-PII commit policy**:
+
+- Commit as GitHub handle + noreply only: `BeanCounter11` / `BeanCounter11@users.noreply.github.com`
+- Do not put personal names or email addresses in tracked files
+- After cloning, enable the repo hooks once:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+`pre-commit` and `pre-push` under `.githooks/` reject unsafe identity or emails in staged content. Cursor also loads `.cursor/rules/personal-data-protection.mdc` and a shell guard for agent commits.
+
 ## License
 
 MIT — see [LICENSE](./LICENSE).
+

@@ -1,0 +1,42 @@
+---
+description: Strict personal-data rules for commits and GitHub — no personal names or emails
+alwaysApply: true
+---
+
+# Personal Data Protection (GitHub Commits)
+
+This repository must never expose personal identity. Treat this as a hard security requirement.
+
+## Commit identity (mandatory)
+
+When creating any git commit in this repo:
+
+- **Author name** must be the GitHub handle only: `BeanCounter11`
+- **Author email** must be the GitHub noreply address: `BeanCounter11@users.noreply.github.com`
+- Prefer one-shot flags (do **not** set global `user.name` / `user.email` to personal data):
+
+```bash
+git -c user.name="BeanCounter11" -c user.email="BeanCounter11@users.noreply.github.com" commit -m "..."
+```
+
+- Same identity for **committer** (the `-c` flags above cover both when used for `git commit`).
+
+## File contents (mandatory)
+
+Never write into tracked files:
+
+- Personal / legal names
+- Personal email addresses (any `@` mailbox that is not a GitHub `users.noreply.github.com` address)
+- Phone numbers, home addresses, or other PII
+
+Use the GitHub handle or project brand (`buildforjoy.dev`) for copyright, credits, and contact wording.
+
+## Before push
+
+- Confirm staged diffs and commit metadata contain no personal name/email.
+- Do not force-push rewritten history unless the user explicitly requests it.
+- Leave local-only paths (e.g. `.cursor/` agent caches) untracked unless the user asks to commit them.
+
+## If personal data is found
+
+Stop. Remove it from files and/or rewrite the commit identity before pushing. Do not push and “fix later.”

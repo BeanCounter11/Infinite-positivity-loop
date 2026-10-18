@@ -1,0 +1,49 @@
+#!/bin/sh
+# Block commits that use personal identity or introduce email addresses in file contents.
+# On Windows without sh-available chmod quirks, also invoke the PowerShell mirror when present.
+set -e
+
+HOOK_DIR=$(dirname "$0")
+if command -v powershell.exe >/dev/null 2>&1 && [ -f "$HOOK_DIR/pre-commit.ps1" ]; then
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$HOOK_DIR/pre-commit.ps1"
+  exit $?
+fi
+
+REQUIRED_NAME="BeanCounter11"
+NOREPLY_SUFFIX="@users.noreply.github.com"
+
+ident=$(git var GIT_AUTHOR_IDENT)
+author_name=${ident%% <*}
+author_email=$(printf '%s\n' "$ident" | sed -n 's/^.*<\([^>]*\)>.*$/\1/p')
+
+if [ "$author_name" != "$REQUIRED_NAME" ]; then
+  echo "personal-data: author name must be \"$REQUIRED_NAME\" (GitHub handle), got \"$author_name\"."
+  echo "Use: git -c user.name=\"$REQUIRED_NAME\" -c user.email=\"${REQUIRED_NAME}${NOREPLY_SUFFIX}\" commit ..."
+  exit 1
+fi
+
+case "$author_email" in
+  *@users.noreply.github.com) ;;
+  *)
+    echo "personal-data: author email must end with $NOREPLY_SUFFIX, got \"$author_email\"."
+    echo "Use: git -c user.name=\"$REQUIRED_NAME\" -c user.email=\"${REQUIRED_NAME}${NOREPLY_SUFFIX}\" commit ..."
+    exit 1
+    ;;
+esac
+
+if git diff --cached --name-only --diff-filter=ACM | grep -q .; then
+  hits=$(git diff --cached -U0 --diff-filter=ACM \
+    | grep -E '^\+' \
+    | grep -Ev '^\+\+\+' \
+    | grep -Eio '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' \
+    | grep -Ev '@users\.noreply\.github\.com$|^noreply@github\.com$' \
+    || true)
+  if [ -n "$hits" ]; then
+    echo "personal-data: staged changes contain email address(es):"
+    printf '%s\n' "$hits" | sort -u
+    echo "Remove personal emails before committing."
+    exit 1
+  fi
+fi
+
+exit 0
